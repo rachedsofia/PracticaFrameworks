@@ -32,7 +32,7 @@ public class Frameworks {
 
 	public final void init() throws IOException, Exception {
 		if (esJson()) {
-			this.buscarAccionesJSON();
+			this.acciones = this.buscarAccionesJSON();
 		} else {
 			this.buscarAcciones();
 		}
@@ -106,7 +106,7 @@ public class Frameworks {
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(this.filePath))) {
 			JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-			JsonArray jsonArray = jsonObject.getAsJsonArray("acciones");
+			JsonArray jsonArray = jsonObject.getAsJsonArray("accions");
 			for (JsonElement jsonElement : jsonArray) {
 				String clase = jsonElement.getAsString();
 				Accion nuevaAccion = (Accion) Class.forName(clase).getDeclaredConstructor().newInstance();
