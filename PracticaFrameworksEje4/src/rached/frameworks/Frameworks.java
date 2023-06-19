@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -13,7 +15,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
@@ -24,6 +25,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 public class Frameworks {
 	private String filePath;
 	private Map<Integer, Accion> acciones;
+	Pantalla pantalla;
 
 	public Frameworks(String path) {
 		this.filePath = path;
@@ -57,21 +59,32 @@ public class Frameworks {
 	}
 
 	private void mostrarMenu(Screen screen) throws IOException {
-		screen.clear();
+//		screen.clear();
+//
+//		TextGraphics textGraphics = screen.newTextGraphics();
+//		textGraphics.putString(0, 0, "Bienvenido, estas son sus opciones:");
+//		textGraphics.putString(0, 0, "Bienvenido, estas son sus opciones:");
+//		int row = 2;
+//		for (Map.Entry<Integer, Accion> entry : acciones.entrySet()) {
+//			String optionText = entry.getKey() + ". " + entry.getValue().nombreItemMenu() + " ("
+//					+ entry.getValue().descripcionItemMenu() + ")";
+//			textGraphics.putString(0, row++, optionText);
+//		}
+//
+//		screen.refresh();
+		this.pantalla = new Pantalla(convertirALista());
+		this.pantalla.mostrar();
+		leerOpcionIngresada(screen);
+	}
 
-		TextGraphics textGraphics = screen.newTextGraphics();
-		textGraphics.putString(0, 0, "Bienvenido, estas son sus opciones:");
-		textGraphics.putString(0, 0, "Bienvenido, estas son sus opciones:");
-		int row = 2;
-		for (Map.Entry<Integer, Accion> entry : acciones.entrySet()) {
-			String optionText = entry.getKey() + ". " + entry.getValue().nombreItemMenu() + " ("
-					+ entry.getValue().descripcionItemMenu() + ")";
-			textGraphics.putString(0, row++, optionText);
+	private List<Accion> convertirALista() {
+		List<Accion> lista = new ArrayList<>();
+
+		for (int i = 0; i < this.acciones.size(); i++) {
+			lista.add(this.acciones.get(i));
 		}
 
-		screen.refresh();
-
-		leerOpcionIngresada(screen);
+		return lista;
 	}
 
 	private void leerOpcionIngresada(Screen screen) throws IOException {
@@ -111,6 +124,7 @@ public class Frameworks {
 				String clase = jsonElement.getAsString();
 				Accion nuevaAccion = (Accion) Class.forName(clase).getDeclaredConstructor().newInstance();
 				lista.put(i, nuevaAccion);
+				lista.put(i, new Salir());
 				i++;
 			}
 		} catch (IOException e) {
@@ -118,6 +132,7 @@ public class Frameworks {
 			e.printStackTrace();
 
 		}
+
 		return lista;
 	}
 
