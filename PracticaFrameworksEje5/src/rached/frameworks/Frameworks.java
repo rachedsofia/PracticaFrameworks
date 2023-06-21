@@ -25,16 +25,20 @@ import com.googlecode.lanterna.terminal.Terminal;
 public class Frameworks {
 	private String filePath;
 	private Map<Integer, Accion> acciones;
-	Pantalla pantalla;
+	private MaxThreads maxThreads;
+	private Pantalla pantalla;
 
 	public Frameworks(String path) {
 		this.filePath = path;
 		this.acciones = new HashMap<>();
+		this.maxThreads = new MaxThreads(2);
+
 	}
 
 	public final void init() throws IOException, Exception {
 		if (esJson()) {
 			this.acciones = this.buscarAccionesJSON();
+			maxThreads.agregarAcciones(this.acciones);
 		} else {
 			this.buscarAcciones();
 		}
@@ -59,19 +63,6 @@ public class Frameworks {
 	}
 
 	private void mostrarMenu(Screen screen) throws IOException {
-//		screen.clear();
-//
-//		TextGraphics textGraphics = screen.newTextGraphics();
-//		textGraphics.putString(0, 0, "Bienvenido, estas son sus opciones:");
-//		textGraphics.putString(0, 0, "Bienvenido, estas son sus opciones:");
-//		int row = 2;
-//		for (Map.Entry<Integer, Accion> entry : acciones.entrySet()) {
-//			String optionText = entry.getKey() + ". " + entry.getValue().nombreItemMenu() + " ("
-//					+ entry.getValue().descripcionItemMenu() + ")";
-//			textGraphics.putString(0, row++, optionText);
-//		}
-//
-//		screen.refresh();
 		this.pantalla = new Pantalla(convertirALista());
 		this.pantalla.mostrar();
 		leerOpcionIngresada(screen);
@@ -122,11 +113,12 @@ public class Frameworks {
 			JsonArray jsonArray = jsonObject.getAsJsonArray("accions");
 			for (JsonElement jsonElement : jsonArray) {
 				String clase = jsonElement.getAsString();
+				maxThreads.agregarAcciones(lista);
 				Accion nuevaAccion = (Accion) Class.forName(clase).getDeclaredConstructor().newInstance();
+				maxThreads.agregarAcciones(lista);
 				lista.put(i, nuevaAccion);
 				i++;
 			}
-
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -160,5 +152,6 @@ public class Frameworks {
 			throw new RuntimeException("Ocurrio un error con el archivo .config: " + e.getMessage());
 		}
 	}
-
 }
+//
+//}

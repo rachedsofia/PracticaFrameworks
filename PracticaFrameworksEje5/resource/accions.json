@@ -1,0 +1,3 @@
+{
+"accions": ["rached.utilizacion.AccionUno", "rached.utilizacion.AccionDos","rached.utilizacion.Accion3","rached.utilizacion.Accion4"], "max-threads": 2
+}
