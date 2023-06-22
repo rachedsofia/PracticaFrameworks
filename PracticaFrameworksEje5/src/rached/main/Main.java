@@ -10,7 +10,6 @@ public class Main {
 		Frameworks framework = new Frameworks(
 				"C:\\Users\\msofi\\git\\PracticaFrameworks\\PracticaFrameworksEje4\\resource\\accions.json");
 		framework.init();
-
 	}
 
 }

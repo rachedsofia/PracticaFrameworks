@@ -13,7 +13,7 @@ public class MaxThreads {
 	private HashMap<Integer, Accion> acciones;
 	private ExecutorService executor;
 
-	public MaxThreads(Integer limite) {
+	public MaxThreads(int limite) {
 		this.limite = limite;
 		this.executor = Executors.newFixedThreadPool(limite);
 	}
@@ -37,19 +37,7 @@ public class MaxThreads {
 	}
 
 	public void ejecutar() {
-//
-//		Collection<Callable<String>> callables = new LinkedList<>();
-//
-//		this.acciones.stream().forEach(x -> callables.add(() -> {
-//			x.ejecutar();
-//			return "Listo";
-//		}));
-//
-//		try {
-//			this.executor.invokeAll(callables);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+
 		List<Callable<String>> callables = new ArrayList<>();
 
 		for (Accion accion : this.acciones.values()) {
@@ -67,7 +55,7 @@ public class MaxThreads {
 
 	}
 
-	private Integer cuposDisponibles() {
+	private int cuposDisponibles() {
 		return limite - this.acciones.size();
 	}
 

@@ -27,18 +27,17 @@ public class Frameworks {
 	private Map<Integer, Accion> acciones;
 	private MaxThreads maxThreads;
 	private Pantalla pantalla;
+	private int threadsDelJson;
 
 	public Frameworks(String path) {
 		this.filePath = path;
 		this.acciones = new HashMap<>();
-		this.maxThreads = new MaxThreads(2);
-
+		this.maxThreads = new MaxThreads(this.cantidadHilos());
 	}
 
 	public final void init() throws IOException, Exception {
 		if (esJson()) {
 			this.acciones = this.buscarAccionesJSON();
-			maxThreads.agregarAcciones(this.acciones);
 		} else {
 			this.buscarAcciones();
 		}
@@ -64,6 +63,7 @@ public class Frameworks {
 
 	private void mostrarMenu(Screen screen) throws IOException {
 		this.pantalla = new Pantalla(convertirALista());
+
 		this.pantalla.mostrar();
 		leerOpcionIngresada(screen);
 	}
@@ -111,14 +111,19 @@ public class Frameworks {
 		try (BufferedReader reader = new BufferedReader(new FileReader(this.filePath))) {
 			JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
 			JsonArray jsonArray = jsonObject.getAsJsonArray("accions");
+
+			this.threadsDelJson = jsonObject.get("max-threads").getAsInt();
+
 			for (JsonElement jsonElement : jsonArray) {
 				String clase = jsonElement.getAsString();
-				maxThreads.agregarAcciones(lista);
 				Accion nuevaAccion = (Accion) Class.forName(clase).getDeclaredConstructor().newInstance();
-				maxThreads.agregarAcciones(lista);
 				lista.put(i, nuevaAccion);
 				i++;
+
 			}
+			MaxThreads maxThreads = new MaxThreads(threadsDelJson);
+			maxThreads.ejecutar();
+
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -151,6 +156,10 @@ public class Frameworks {
 		} catch (Exception e) {
 			throw new RuntimeException("Ocurrio un error con el archivo .config: " + e.getMessage());
 		}
+	}
+
+	public int cantidadHilos() {
+		return this.threadsDelJson;
 	}
 }
 //
