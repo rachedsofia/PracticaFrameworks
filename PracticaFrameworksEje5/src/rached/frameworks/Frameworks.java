@@ -32,7 +32,8 @@ public class Frameworks {
 	public Frameworks(String path) {
 		this.filePath = path;
 		this.acciones = new HashMap<>();
-		this.maxThreads = new MaxThreads(this.cantidadHilos());
+		// this.maxThreads = new MaxThreads(1); // Le puse 1 porque estaba recibiendo un
+		// null.
 	}
 
 	public final void init() throws IOException, Exception {
@@ -121,11 +122,12 @@ public class Frameworks {
 				i++;
 
 			}
+
 			MaxThreads maxThreads = new MaxThreads(threadsDelJson);
 			maxThreads.ejecutar();
 
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			System.out.println("error en buscarAcciones: " + e.getMessage());
 			e.printStackTrace();
 
 		}

@@ -16,6 +16,8 @@ public class MaxThreads {
 	public MaxThreads(int limite) {
 		this.limite = limite;
 		this.executor = Executors.newFixedThreadPool(limite);
+		this.acciones = new HashMap<Integer, Accion>(); // Esto no estaba, por eso daba null pointer al tratar de
+														// hacer un put.
 	}
 
 //	public void agregarAcciones(Queue<Accion> acciones) {
