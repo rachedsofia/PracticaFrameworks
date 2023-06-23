@@ -1,7 +1,7 @@
 package rached.frameworks;
 
 public interface Accion {
-	void ejecutar();
+	String ejecutar();
 
 	String nombreItemMenu();
 

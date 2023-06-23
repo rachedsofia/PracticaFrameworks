@@ -1,15 +1,15 @@
 package rached.main;
 
-import java.io.IOException;
-
-import rached.frameworks.Frameworks;
+import rached.frameworks.Start;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException, Exception {
-		Frameworks framework = new Frameworks(
+	public static void main(String[] args) throws Exception {
+
+		Start start = new Start(
 				"C:\\Users\\msofi\\git\\PracticaFrameworks\\PracticaFrameworksEje5\\resource\\accions.json");
-		framework.init();
+
+		start.init();
 	}
 
 }

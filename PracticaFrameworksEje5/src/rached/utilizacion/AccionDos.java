@@ -3,10 +3,10 @@ package rached.utilizacion;
 import rached.frameworks.Accion;
 
 public class AccionDos implements Accion {
-
 	@Override
-	public void ejecutar() {
-		System.out.println("Ejecutando Accion 2");
+	public String ejecutar() {
+		// TODO Auto-generated method stub
+		return "Se esta ejecutando Accion 2";
 	}
 
 	@Override

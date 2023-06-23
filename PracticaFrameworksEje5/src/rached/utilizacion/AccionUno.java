@@ -5,9 +5,9 @@ import rached.frameworks.Accion;
 public class AccionUno implements Accion {
 
 	@Override
-	public void ejecutar() {
+	public String ejecutar() {
 		// TODO Auto-generated method stub
-		System.out.println("Ejecutando Accion 1");
+		return "Se esta ejecutando Accion 1";
 	}
 
 	@Override
